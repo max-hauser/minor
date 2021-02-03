@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Visitekaartje</title>
+</head>
+<body>
+
+  <script>
+    const url = 'https://600ff44f6c21e1001704fac2.mockapi.io/minor-web/api/'
+
+    // GET REQUEST
+    const teams = fetch(`${url}/squads/1/teams/3/members/`)
+                    .then(response => response.json())
+                    .then(data => console.log('fetch', data));
+
+    // PUT REQUEST
+    const putData = {
+        id:1,
+        teamId:1,
+        name:'Max',
+        prefix:'',
+        surname:'Hauser',
+        mugshot:'https://media-exp1.licdn.com/dms/image/C5603AQFLbDepcGoXjA/profile-displayphoto-shrink_200_200/0/1555153305632?e=1617840000&v=beta&t=c6x1P68LscyYGSAWQ9Lx70htDbMbt-xRhprPq0wYEB4',
+        githubHandle:'max-hauser',
+        other: {
+            sport: 'seven app',
+            muziek: 'Rock',
+            werkplek: 'Thuis'
+        }
+    }
+
+    async function postData(url = '', data = {}) {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        return response.json();
+    }
+      
+    postData(`${url}/squads/1/teams/1/members/1`, putData)
+        .then(data => {
+            console.log('put', data);
+            renderData(data);
+        });  
+
+
+     async function renderData(data){
+       const member = await data;
+
+       const body = document.querySelector('body');
+
+      //  body.innerHTML += `
+      //  <article id="${member.name}"> 
+      //     <img src="${member.mugshot}" alt="profile picture">
+      //     <h2>${member.name + ' ' + member.surname}</h2>
+      //     <ul>
+      //       <li>${member.other['sport']}</li>
+      //       <li>${member.other['muziek']}</li>
+      //       <li>${member.other['werkplek']}</li>
+      //     </ul>
+      //   <a href="https://github.com/max-hauser">max-hauser</a> 
+      //   </article>
+      //  `;
+
+      body.innerHTML += `
+      <article id="max"> 
+          <img src="https://media-exp1.licdn.com/dms/image/C5603AQFLbDepcGoXjA/profile-displayphoto-shrink_200_200/0/1555153305632?e=1617840000&v=beta&t=c6x1P68LscyYGSAWQ9Lx70htDbMbt-xRhprPq0wYEB4" alt="profile picture">
+          <h2>Max Hauser</h2>
+          <ul>
+            <li><span>&#128170;</span>Fitness</li>
+            <li><span>&#129304;</span>Rock</li>
+            <li><span>&#128188;</span>Thuis</li>
+          </ul>
+        <a href="https://github.com/max-hauser">Github: max-hauser</a> 
+        </article> 
+     `;
+    }
+  </script>
+  <style>
+    article#max {
+        background: #f1f1f1;
+        display: flex;
+        flex-direction: column;
+        max-width: 300px;
+        padding: 15px;
+        box-shadow: 0px 0px 20px #000;
+        border-radius: 10px;
+        justify-content: center;
+        align-items: center;
+        color: pink;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        background: linear-gradient(to top, white 45%, pink 45%);
+    }
+
+    article#max img{
+      border-radius: 100%;      
+    }
+
+    article#max h2{
+      padding: 15px 0px;
+      margin-top: 15px;
+    }
+
+    article#max ul{
+      list-style-type: none;
+      margin: 0 0 25px 0px;
+      padding: 0;
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    article#max ul li{
+      padding: 10px;
+    }
+
+    article#max ul li span {
+      display: block;
+      text-align: center;
+    }      
+
+    article#max a{
+      color: blue;
+      text-decoration: none;
+    }  
+  </style>  
+</body>
+</html>

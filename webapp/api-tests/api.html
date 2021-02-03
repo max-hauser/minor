@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>NEWS APP</title>
+</head>
+<body>
+
+  <form action="/">
+    <input type="text" name="query" id="query">
+    <input type="submit" id="search" value="search">
+  </form>
+
+  <script>
+
+    const queryInput = document.querySelector('#query').value;
+    const search = document.querySelector('#search');
+
+    search.addEventListener('click', checkInput);
+
+    function checkInput(event){
+      event.preventDefault();
+      if(queryInput.length < 0){
+        console.log('voer iets in..');
+      }else{
+        callAPI(queryInput);
+      }
+    }
+
+
+    async function callAPI(query){
+      const apiKey = "8f714e41-1ce0-4f4e-93f8-dd656737d874";
+      const url = `https://content.guardianapis.com/search?q=${query}&api-key=${apiKey}`;
+
+      const queryResult = await fetch(url).then(promise => promise.json()).then(data => {return data.response.results});
+      if(queryResult.length > 0){
+        renderResult(queryResult);
+      }
+    }
+
+    function renderResult(result) {
+      const body = document.querySelector('body');
+
+      result.forEach(element => {
+        console.log(element);
+        body.innerHTML +=`
+        <article>
+          <h3>${element.webTitle}</h3>
+          <p>${element.sectionName}</p>
+          <p>${element.webPublicationDate}</p>
+        </article>
+        `
+      });
+    }
+
+
+
+  
+  
+  </script>
+</body>
+</html>
