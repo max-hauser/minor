@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+
+      body{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+      }
+
+    article{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 3fr));
+	    grid-gap: 2em;
+      width: 70vw;
+    }
+
+    section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+  a img {
+      width: 100%;
+      object-fit: cover;
+  }
+
+  a h3{
+    padding: 15px;
+  }
+
+    article a {
+        text-decoration: none;
+        color: #000;
+        background-color: #f1f1f1;
+    }    
+    </style>  
+</head>
+<body>
+
+    <section>
+        <article></article>
+      </section>
+
+  <script>
+    const key = "e5e6701e3488481c8ea8a07e2d8e4f84";
+    const resultAmount = 9;
+    fetch(`https://api.spoonacular.com/recipes/random?number=${resultAmount}&apiKey=${key}`)
+    .then(promise => promise.json())
+    .then(data => displayResults(data));
+
+    function displayResults(result) {
+      // displays the results
+      const article = document.querySelector('article');
+      const recipes = result.recipes;
+
+      recipes.forEach(recipe => {
+        console.log(recipe)
+        article.innerHTML += `
+          <a href="#">
+            <img src="${recipe.image}" />
+            <h3>${recipe.title} | <span>&#9202; ${recipe.readyInMinutes} min | 👤 ${Math.round(recipe.servings)} personen</span></h3>
+          </a>
+        `;        
+      });
+
+    }
+  </script>
+</body>
+</html>

@@ -5,16 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <style>
+
+    body{
+      display: flex;
+      align-content: center;
+      justify-content: center;
+    }
+
+    main{
+      width: 80vw;
+      justify-content: center;
+      align-content: center;
+    }
+  article{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    column-gap: 2em;
+  }
+  </style>
 </head>
 <body>
+
+  <section>
+
+    <main>
+      <article>
+
+      </article>
+    </main>
+  </section>
+
   <script>
     (function(){
       const appID = "4fb496cb";
       const appKEY = "f75405ac2f61bab031768047e0d51252";
       const query = "chicken";
       const url = `https://api.edamam.com/search?q=${query}&app_id=${appID}&app_key=${appKEY}`;
-        fetch(url).then(promise => promise.json()).then(data => console.log(data));
+        fetch(url).then(promise => promise.json()).then(data => displayResults(data));
     }());
+
+    function displayResults(result) {
+      // displays all the results
+
+      const article = document.querySelector('article');
+      const results = result.hits;
+      results.forEach(result => {
+        const recipe = result.recipe;
+        console.log(recipe);
+        article.innerHTML += `
+          <a href="#">
+            <img src="${recipe.image}" />
+            <h3>${recipe.label} | <span>&#9202; ${recipe.totalTime} min | &#127828; ${Math.round(recipe.calories)} calorieën</span></h3>
+          </a>
+        `;
+      });
+    }
   </script>
 </body>
 </html>
